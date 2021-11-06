@@ -1,7 +1,5 @@
 package hu.rf1.webshop.Webshop2.Controller;
 
-import hu.rf1.webshop.Webshop2.Model.Employee;
-import hu.rf1.webshop.Webshop2.Repository.WebapiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
