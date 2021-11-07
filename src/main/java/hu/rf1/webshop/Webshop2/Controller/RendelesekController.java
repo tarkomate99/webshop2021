@@ -5,6 +5,7 @@ import hu.rf1.webshop.Webshop2.Model.Termekek;
 import hu.rf1.webshop.Webshop2.Repository.RendelesekRepository;
 import hu.rf1.webshop.Webshop2.Repository.TermekekRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;

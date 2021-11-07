@@ -2,17 +2,20 @@ package hu.rf1.webshop.Webshop2.Controller;
 
 import hu.rf1.webshop.Webshop2.Model.Users;
 import hu.rf1.webshop.Webshop2.Repository.UserRepository;
+import hu.rf1.webshop.Webshop2.Service.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +24,10 @@ public class UsersController {
 
     @Autowired
     UserRepository repository;
+
+    private EmailService emailService;
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping("/users")
     public String usersPage(Model model){
@@ -33,7 +40,7 @@ public class UsersController {
     public String newFormForUser(Model model){
         Users user = new Users();
         model.addAttribute("users", user);
-        return "register";
+        return "registration";
     }
 
     @PostMapping("/users/add")
@@ -63,30 +70,28 @@ public class UsersController {
         return "redirect:/";
     }
 
-    @RequestMapping("/login")
-    public String login(HttpSession session){
-        return "login";
-    }
-
-
-    @RequestMapping("/login-sucess")
-    public String login(HttpSession session, Model model, @RequestParam("username")String username, @RequestParam("jelszo") String jelszo){
-        List<Users> user = repository.findAll();
-        for( Users usr : user){
-            if(!Objects.equals(usr.getName(), username) && !Objects.equals(usr.getPassword(), jelszo)){
-                return "login";
-            }else if(Objects.equals(usr.getName(), username) && Objects.equals(usr.getPassword(),jelszo)){
-                session.setAttribute("user", usr);
-            }
-
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/";
+        return "redirect:/login?logout";
+    }
+    @RequestMapping("/registration")
+    public String registration(Model model){
+        model.addAttribute("user", new Users());
+        return "registration";
     }
 
-    @RequestMapping("/logout")
-    public String logout(HttpSession session){
-        session.removeAttribute("user");
-        return "redirect:/";
+    @RequestMapping(value = "/reg", method = RequestMethod.POST)
+    public String greetingSubmit(@ModelAttribute Users user){
+        System.out.println("Uj USER");
+        log.info("Uj user!");
+        log.info(user.getEmail());
+//        emailService.sendMessage(user.getEmail()); TODO nem működik vmiért
+//        log.debug(user.getName());
+//        log.debug(user.getPassword());
+        return "auth/login";
     }
-
 }

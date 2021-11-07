@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Termékek listája</title>
@@ -14,13 +14,13 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link active" href="/">Főoldal <span class="sr-only">(current)</span></a>
-                <a th:if="${session.user != null and session.user.user_type == 'admin'}" class="nav-item nav-link" href="/users">Felhasználók</a>
-                <a th:if="${session.user != null and session.user.user_type == 'admin'}"class="nav-item nav-link" href="/orders">Rendelések</a>
-                <a th:if="${session.user != null and session.user.user_type=='user'}" class="nav-item nav-link" href="/orders/{id}">Rendeléseim</a>
-                <a th:if="${session.user != null and session.user.user_type == 'admin'}" class="nav-item nav-link" href="/ratings">Értékelések</a>
-                <a th:if="${session.user == null}" class="nav-item nav-link" href="/login">Bejelentkezés</a>
-                <a th:if="${session.user == null}" class="nav-item nav-link" href="/users/new">Regisztráció</a>
-                <a th:if="${session.user != null}" class="nav-item nav-link" href="/logout">Kijelentkezés</a>
+                <a th:if="${session.username != null and session.user_type == 'admin'}" class="nav-item nav-link" href="/users">Felhasználók</a>
+                <a th:if="${session.username != null and session.user_type == 'admin'}"class="nav-item nav-link" href="/orders">Rendelések</a>
+                <a th:if="${session.username != null and session.user_type == 'user'}" class="nav-item nav-link" href="/orders/{id}">Rendeléseim</a>
+                <a th:if="${session.username != null and session.user_type == 'admin'}" class="nav-item nav-link" href="/ratings">Értékelések</a>
+                <a th:if="${session.username == null}" class="nav-item nav-link" href="/login">Bejelentkezés</a>
+                <a th:if="${session.username == null}" class="nav-item nav-link" href="/registration">Regisztráció</a>
+                <a th:if="${session.username != null}" th:href="@{/logout}" class="nav-item nav-link"><span class="glyphicon glyphicon-log-out"></span>Kijelentkezés</a>
             </div>
         </div>
     </nav>
