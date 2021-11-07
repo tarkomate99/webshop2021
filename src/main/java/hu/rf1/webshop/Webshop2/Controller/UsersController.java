@@ -2,6 +2,7 @@ package hu.rf1.webshop.Webshop2.Controller;
 
 import hu.rf1.webshop.Webshop2.Model.Users;
 import hu.rf1.webshop.Webshop2.Repository.UserRepository;
+import hu.rf1.webshop.Webshop2.Repository.UsersRepo;
 import hu.rf1.webshop.Webshop2.Service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import java.util.Objects;
 public class UsersController {
 
     @Autowired
-    UserRepository repository;
+    UsersRepo repository;
 
     private EmailService emailService;
 
