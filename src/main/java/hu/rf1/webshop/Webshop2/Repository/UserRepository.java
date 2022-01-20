@@ -1,15 +1,16 @@
 package hu.rf1.webshop.Webshop2.Repository;
 
-import hu.rf1.webshop.Webshop2.Model.Users;
-import org.apache.tomcat.jni.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import hu.rf1.webshop.Webshop2.Model.User;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface UserRepository extends CrudRepository<Users,Long> {
+public interface UserRepository extends CrudRepository<User,Long> {
 
-    Users findByEmail(String email);
+    List<User> findAll();
+
+    User findByEmail(String email);
+
+    User findByActivation(String code);
 
 }

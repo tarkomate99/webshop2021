@@ -1,12 +1,17 @@
 package hu.rf1.webshop.Webshop2.Controller;
 
-import hu.rf1.webshop.Webshop2.Model.Users;
+import hu.rf1.webshop.Webshop2.DAO.UserDAO;
+import hu.rf1.webshop.Webshop2.Model.User;
 import hu.rf1.webshop.Webshop2.Repository.UserRepository;
 import hu.rf1.webshop.Webshop2.Repository.UsersRepo;
 import hu.rf1.webshop.Webshop2.Service.EmailService;
+import hu.rf1.webshop.Webshop2.Service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -24,51 +29,85 @@ import java.util.Objects;
 public class UsersController {
 
     @Autowired
-    UsersRepo repository;
+    UserRepository repository;
 
     private EmailService emailService;
+
+    private UserService userService;
+
+    private String user_typ;
+
+    @Autowired
+    private UserDAO userDAO;
+
+
+    @Autowired
+    public void setUserService(UserService userService){ this.userService=userService;}
+
+    @Autowired
+    public void setEmailService(EmailService emailService){
+        this.emailService = emailService;
+    }
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping("/users")
-    public String usersPage(Model model){
-        List<Users> user = repository.findAll();
+    public String usersPage(Model model, HttpServletRequest request){
+        List<User> user = repository.findAll();
         model.addAttribute("userslist", user);
-        return "users";
+        user_typ=request.getSession().getAttribute("user_type").toString();
+        if (!Objects.equals(user_typ, "admin")){
+            return "error";
+        }else {
+            return "users";
+        }
     }
 
     @RequestMapping("/users/new")
     public String newFormForUser(Model model){
-        Users user = new Users();
+        User user = new User();
         model.addAttribute("users", user);
-        return "registration";
+        if (!Objects.equals(user_typ, "admin")){
+            return "error";
+        }else {
+            return "registration";
+        }
     }
 
     @PostMapping("/users/add")
-    public String addUser(Users user){
-        List<Users> usr = repository.findAll();
-        for(Users felhasznalok : usr){
-            if(!Objects.equals(felhasznalok.getEmail(), user.getEmail()) && !Objects.equals(felhasznalok.getName(), user.getName())){
-                repository.save(user);
-            }else{
-                return "redirect:/";
-            }
+    public String addUser(User user){
+        user.setEnabled(true);
+        repository.save(user);
+        if (!Objects.equals(user_typ, "admin")){
+            return "error";
+        }else {
+            return "redirect:/users";
         }
-        return "redirect:/login";
     }
 
     @RequestMapping("/edit/users/{id}")
     public ModelAndView editForm(@PathVariable("id")long id){
         ModelAndView mw = new ModelAndView("edit_user");
-        Users user = repository.findById(id).orElse(null);
+        User user = repository.findById(id).orElse(null);
         mw.addObject("users", user);
         return mw;
     }
 
+//    @RequestMapping("/delete/users/{id}")
+//    public String deleteUser(@PathVariable("id")long id){
+//        repository.deleteById(id);
+//        if (!Objects.equals(user_typ, "admin")){
+//            return "error";
+//        }else {
+//            return "redirect:/users";
+//        }
+//    }
+
     @RequestMapping("/delete/users/{id}")
-    public String deleteUser(@PathVariable("id")long id){
-        repository.deleteById(id);
-        return "redirect:/";
+    public String deleteUser(@PathVariable("id") int id){
+        userDAO.deleteUser(id);
+
+        return "redirect:/users";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -81,18 +120,25 @@ public class UsersController {
     }
     @RequestMapping("/registration")
     public String registration(Model model){
-        model.addAttribute("user", new Users());
+        model.addAttribute("user", new User());
         return "registration";
     }
 
-    @RequestMapping(value = "/reg", method = RequestMethod.POST)
-    public String greetingSubmit(@ModelAttribute Users user){
-        System.out.println("Uj USER");
-        log.info("Uj user!");
-        log.info(user.getEmail());
-//        emailService.sendMessage(user.getEmail()); TODO nem működik vmiért
-//        log.debug(user.getName());
-//        log.debug(user.getPassword());
+    //@RequestMapping(value = "/reg", method = RequestMethod.POST)
+    @PostMapping("/reg")
+    public String greetingSubmit(@ModelAttribute User user){
+            System.out.println("Uj USER");
+            log.info("Uj user!");
+            log.info(user.getEmail());
+            log.debug(user.getName());
+            log.debug(user.getPassword());
+            userService.registerUser(user);
+        return "auth/login";
+    }
+
+    @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
+    public String activation(@PathVariable("code") String code, HttpServletResponse response){
+        String result = userService.userActivation(code);
         return "auth/login";
     }
 }

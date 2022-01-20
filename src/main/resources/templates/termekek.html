@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Termékek listája</title>
+    <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/7512e4ab1d.js" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/searchscript.js}"></script>
+    <script type="text/javascript" th:src="@{/js/kuponkod.js}"></script>
+    <script type="text/javascript" th:src="@{/js/setSearchString.js}"></script>
+    <script type="text/javascript" th:src="@{/js/welcome.js}"></script>
+    <script type="text/javascript" th:src="@{/js/prod_modal.js}"></script>
+    <script type="text/javascript" th:src="@{/js/setCategory.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table_responsive.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+</head>
+<body>
+<div id="page-container">
+    <div id="content-wrap">
+<header>
+    <!-- HEADER -->
+    <div id="header">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- LOGO -->
+                <div class="col-md-3">
+                    <div class="header-logo">
+                        <a href="#" class="logo">
+                            <img th:src="@{/img/logo.png}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!-- /LOGO -->
+
+                <!-- KERESO -->
+                <div class="col-md-6">
+                    <div class="header-search">
+                        <form>
+                            <select id="kategoria" onclick="searchByCategory()" class="input-select">
+                                <option value="Minden">Minden</option>
+                                <option value="Monitor">Monitor</option>
+                                <option value="Processzor">Processzor</option>
+                                <option value="Videókártya">Videókártya</option>
+                            </select>
+                            <input class="input" id="myInput" onkeyup="onSearch(); deleteString()" placeholder="Termékek keresése">
+                            <button class="search-btn"><a href="/termekek" onclick="addSeachString()">Keresés</a></button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /KERESO -->
+
+                <!-- Kosar  -->
+                <div class="col-md-3 clearfix">
+                    <div class="header-ctn">
+                        <a th:if="${session.username != null}" onclick="openModal()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Kosár</span>
+                            <span class="qty" id="counter-label">0</span>
+                        </a>
+                        <div class="menu-toggle">
+                            <a href="#">
+                                <i class="fa fa-bars">
+                                    <span>Menü</span>
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /Kosar -->
+                </div>
+                <!-- row -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- /HEADER -->
+    </div>
+</header>
+<!-- NAVIGATION -->
+<nav id="navigation" th:fragment="nav">
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li><a href="/">Főoldal <span class="sr-only">(current)</span></a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'admin'}" href="/users">Felhasználók</a></li>
+                <li><a href="/termekek">Termékek</a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'admin'}" href="/orders">Rendelések</a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'user'}" href="/myorders">Rendeléseim</a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'admin'}" href="/ratings">Értékelések</a></li>
+                <li><a th:if="${session.username != null}" href="/contact">Kapcsolat felvétel</a></li>
+                <li><a th:if="${session.username == null}" href="/login">Bejelentkezés</a></li>
+                <li><a th:if="${session.username == null}" href="/registration">Regisztráció</a></li>
+                <li><a th:if="${session.username != null}" th:href="@{/logout}"><span class="fas fa-sign-out-alt"></span>Kijelentkezés</a></li>
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
+</nav>
+<!-- /NAVIGATION -->
+<div align="center">
+    <h1>Termékek</h1>
+    <br>
+    <a th:if="${session.username != null and session.user_type == 'admin'}" href="/new">Új termék hozzáadása</a><br>
+    <!--        <input type="text" id="myInput" onkeyup="onSearch()" placeholder="Termék név alapján keresés"/>-->
+    <!--        <select name="kategoria" id="kategoria" onclick="searchByCategory()">-->
+    <!--            <option value="Kategória">Kategória</option>-->
+    <!--            <option value="Monitor">Monitor</option>-->
+    <!--            <option value="Processzor">Processzor</option>-->
+    <!--            <option value="Videókártya">Videókártya</option>-->
+    <!--        </select>-->
+    <input type="hidden" readonly id="kate" onchange="searchByCategory()">
+        <table class="dataTable table" id="myTable">
+            <thead class="thead-dark">
+            <tr class="header">
+                <!--                    <td scope="col">ID</td>-->
+                <td scope="col">Termék neve</td>
+                <td scope="col">Ár</td>
+                <td scope="col">Készlet (db)</td>
+                <td scope="col">Értékelés</td>
+                <td scope="col">Kategória</td>
+                <td th:if="${session.username != null}"scope="col" colspan="4" style="text-align: center">Módosítás</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="prod : ${productlist}" scope="row">
+                <td id="prod_id" th:text="${prod.id}" style="display: none">id</td>
+                <td><span th:text="${prod.img}" id="prod_img" style="display: none"></span><img th:src="${prod.img}" alt="prod_img" style="width: 50px;"></td>
+                <td style="display: none"><span id="prod_desc" th:text="${prod.description}"></span></td>
+                <td><button class="showProd btn btn-outline-primary" id="prod_name" th:text="${prod.name}"></button></td>
+                <td data-label="Ár" id="product_price" th:text="${prod.price}+' Ft'">Subject</td>
+                <td data-label="Készlet (db)" th:text="${prod.nofitems}">Subject</td>
+                <td data-label="Értékelés" th:text="${prod.rating}">Subject</td>
+                <td data-label="Kategória" th:text="${prod.category}">Subject</td>
+                <!--                    <td th:if="${session.username != null}"><a th:href="@{/orders/new/{id}(id=${prod.id})}">Megrendelés</a></td>-->
+                <td th:if="${session.username != null}"><button class="btnSelect btn btn-primary" id="kosarba" onclick="item_ad()">Kosárba🛒</button></td>
+                <td th:if="${session.username != null}"><a th:href="@{/ratings/new/{id}(id=${prod.id})}" id="rating" class="btn btn-warning">Értékelés⭐</a></td>
+                <td th:if="${session.username != null and session.user_type == 'admin' or session.user_type == 'uploader'}"><a id="update" th:href="@{/edit/{id}(id=${prod.id})}" class="btn btn-info">Update</a></td>
+                <td th:if="${session.username != null and session.user_type == 'admin' or session.user_type == 'uploader'}">
+                    <a class="btn btn-danger" id="delete" th:href="@{'/delete/'+${prod.id}}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+<!--    <article th:each="prod : ${productlist}">-->
+<!--        <div class="container" style="margin-bottom: 50px">-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-3">-->
+<!--                    <div class="card">-->
+<!--                        <img class="card-img-top" th:src="${prod.img}" style="max-width: 100%" alt="Card image cap">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title" th:text="${prod.name}"></h5>-->
+<!--                            <p class="card-text" th:text="${prod.description}" style="max-width: 100%; text-align: justify"></p>-->
+<!--                        </div>-->
+<!--                        <ul class="list-group list-group-flush">-->
+<!--                            <li class="list-group-item" th:text="${prod.category}"></li>-->
+<!--                            <li class="list-group-item" th:text="${prod.price}+' Ft'"></li>-->
+<!--                            <li class="list-group-item">Vestibulum at eros</li>-->
+<!--                        </ul>-->
+<!--                        <div class="card-body">-->
+<!--                            <a href="#" class="card-link">Card link</a>-->
+<!--                            <a href="#" class="card-link">Another link</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </article>-->
+
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal" tabindex="-1" role="dialog">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <td scope="col">Termék név</td>
+                <td scope="col">Ár</td>
+                <td scope="col">Értékelés</td>
+                <td scope="col">Kategória</td>
+                <td scope="col" colspan="2" style="text-align: center">Módosítás</td>
+            </tr>
+            </thead>
+            <tbody id="list-cart">
+            </tbody>
+        </table>
+        <label for="kupon">
+            Kupon kód: <input type="text" name="kupon" id="kupon" placeholder="Írj be egy kuponkódot..">
+            <button onclick="activateKupon()" id="kpn">Aktiválás</button>
+        </label>
+        <label for="message">
+            <span class="" id="message"></span>
+        </label>
+    </div>
+</div>
+<div class="modal" id="prod_modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeProdModal()">&times;</span>
+            <table id="modaldata" class="table table-striped table-hover table-bordered">
+                <tbody>
+                    <tr id="adatok"></tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+    </div>
+<!-- FOOTER -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- /FOOTER -->
+<script type="text/javascript" th:src="@{/js/menutoggle.js}"></script>
+    </div>
+</body>
+</html>
+
+
+

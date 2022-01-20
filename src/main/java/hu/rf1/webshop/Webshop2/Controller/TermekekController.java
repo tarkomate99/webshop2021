@@ -1,17 +1,23 @@
 package hu.rf1.webshop.Webshop2.Controller;
 
+import hu.rf1.webshop.Webshop2.DAO.ErtekelesDAO;
+import hu.rf1.webshop.Webshop2.DAO.TermekDAO;
 import hu.rf1.webshop.Webshop2.Model.Ertekelesek;
 import hu.rf1.webshop.Webshop2.Model.Termekek;
 import hu.rf1.webshop.Webshop2.Repository.ErtekelesekRepository;
 import hu.rf1.webshop.Webshop2.Repository.TermekekRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -23,24 +29,32 @@ public class TermekekController {
     @Autowired
     ErtekelesekRepository ertekelesekRepository;
 
-    @RequestMapping("/")
+    @Autowired
+    private ErtekelesDAO ertekelesDAO;
+
+    @Autowired
+    private TermekDAO termekDAO;
+
+    private final Log log = LogFactory.getLog(this.getClass());
+
+    @RequestMapping("/termekek/**")
     public String indexPage(Model model){
         List<Termekek> prod = repository.findAll();
-//        List<Ertekelesek> ratings = ertekelesekRepository.findAll();
-//        Double rating = 0.0;
-//        Integer prod_rates = 0;
-//        for (Termekek termek : prod){
-//            for (Ertekelesek rate : ratings){
-//                if (termek.getId() == rate.getTermek_id()){
-//                    rating+=rate.getRating();
-//                    prod_rates+=1;
-//                }
-//            }
-//        }
-//        System.out.println(rating/prod_rates);
+        for(Termekek production : prod){
+            Long ID = production.getId();
+            Integer id = ID.intValue();
+            //log.info(ertekelesDAO.getRatingById(id));
+            termekDAO.updateRatingById(id,ertekelesDAO.getRatingById(id));
+        }
         model.addAttribute("productlist", prod);
-        return "index";
+        return "termekek";
     }
+
+    @RequestMapping("/prod-info/{id}")
+    public @ResponseBody Termekek ProdInfo(@PathVariable("id") int id, Model model){
+        return termekDAO.getProductById(id);
+    }
+
     @RequestMapping("/new")
     public String newFormForTermek(Model model){
         Termekek prod = new Termekek();
@@ -51,7 +65,10 @@ public class TermekekController {
     @PostMapping("/add")
     public String addTermek(Termekek prod){
         repository.save(prod);
-        return "redirect:/";
+        Long ID = prod.getId();
+        Integer id = ID.intValue();
+        ertekelesDAO.insertAfterProductInsert(LocalDateTime.now(),"admin insert",prod.getRating(),id,1);
+        return "redirect:/termekek";
     }
 
     @RequestMapping("/edit/{id}")
@@ -62,10 +79,11 @@ public class TermekekController {
         return mw;
     }
 
+
     @RequestMapping("/delete/{id}")
     public String deleteTermek(@PathVariable("id")long id){
         repository.deleteById(id);
-        return "redirect:/";
+        return "redirect:/termekek";
     }
 
 

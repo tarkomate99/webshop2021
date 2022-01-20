@@ -2,33 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Új Termék</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Termék módosítása</title>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/7512e4ab1d.js" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/delete_search_by_string.js}"></script>
+    <!--<script type="text/javascript" th:src="@{/js/searchscript.js}"></script>-->
+    <script type="text/javascript" th:src="@{/js/search_by_string.js}"></script>
+    <script type="text/javascript" th:src="@{/js/welcome.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
+<div id="page-container">
+    <div id="content-wrap">
+<!-- HEADER -->
+<div th:replace="fragments/headernav :: header"></div>
+<!-- /HEADER -->
+
+<!-- NAV -->
+<div th:replace="fragments/headernav :: nav"></div>
+<!-- /NAV -->
 <div align="center">
     <h1>Termék módosítása</h1>
-    <form action="#" th:action="@{/add}" th:object="${termekek}" method="post">
-        <table>
-            <tr>
-                <td>ID:</td>
-                <td><input type="text" th:field="*{id}" readonly></td>
-                <td>Név:</td>
-                <td><input type="text" th:field="*{name}"></td>
-                <td>Ár:</td>
-                <td><input type="text" th:field="*{price}"></td>
-                <td>Termék darabszáma:</td>
-                <td><input type="text" th:field="*{nofitems}"></td>
-                <td>Értékelés:</td>
-                <td><input type="text" th:field="*{rating}"></td>
-                <td>Kategória:</td>
-                <td><input type="text" th:field="*{category}"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><button type="submit">Módosítás</button></td>
-            </tr>
-        </table>
+    <form action="#" th:action="@{/add}" th:object="${termekek}" method="post" class="form-horizontal">
+        <input type="text" th:field="*{id}" readonly>
+        <div class="control-group">
+            <label for="nev" class="control-label">Termék név:</label>
+            <div class="controls">
+                <input id="nev" type="text" th:field="*{name}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="ar" class="control-label">Ár:</label>
+            <div class="controls">
+                <input id="ar" type="text" th:field="*{price}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="nofitems" class="control-label">Termék darabszáma:</label>
+            <div class="controls">
+                <input id="nofitems" type="text" th:field="*{nofitems}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="rating" class="control-label">Értékelés:</label>
+            <div class="controls">
+                <input id="rating" type="text" th:field="*{rating}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="category" class="control-label">Kategória:</label>
+            <div class="controls">
+                <input id="category" type="text" th:field="*{category}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="img" class="control-label">Kép url:</label>
+            <div class="controls">
+                <input id="img" type="text" th:field="*{img}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="description" class="control-label">Leírás:</label>
+            <div class="controls">
+                <textarea id="description" cols="25" rows="25" type="text" th:field="*{description}"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <!-- Button -->
+            <div class="controls">
+                <button class="btn btn-success" type="submit">Termék módosítása</button>
+            </div>
+        </div>
     </form>
 </div>
+    </div>
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footer"></div>
+    <!-- /FOOTER -->
+<script type="text/javascript" th:src="@{/js/menutoggle.js}"></script>
+</div>
 </body>
+
 </html>

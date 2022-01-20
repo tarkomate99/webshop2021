@@ -2,9 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Employee</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>edit_emp</title>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/7512e4ab1d.js" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/delete_search_by_string.js}"></script>
+    <!--<script type="text/javascript" th:src="@{/js/searchscript.js}"></script>-->
+    <script type="text/javascript" th:src="@{/js/search_by_string.js}"></script>
+    <script type="text/javascript" th:src="@{/js/welcome.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
+<!-- HEADER -->
+<div th:replace="fragments/headernav :: header"></div>
+<!-- /HEADER -->
+
+<!-- NAV -->
+<div th:replace="fragments/headernav :: nav"></div>
+<!-- /NAV -->
     <div align="center">
         <h1>Edit Employee</h1>
         <form action="#" th:action="@{/add}" th:object="${employee}" method="post">
@@ -23,5 +46,6 @@
             </table>
         </form>
     </div>
+    <script type="text/javascript" th:src="@{/js/menutoggle.js}"></script>
 </body>
 </html>

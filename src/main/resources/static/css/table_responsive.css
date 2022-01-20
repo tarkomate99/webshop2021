@@ -1,0 +1,62 @@
+@media (max-width: 975px){
+    .table thead{
+        display: none;
+    }
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+    .table tr{
+        margin-bottom: 15px;
+    }
+    .table td{
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .table td::before{
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+    #prod_name{
+        display: block;
+        margin: auto;
+    }
+    #kosarba{
+        display: block;
+        margin: auto;
+    }
+    #rating{
+        display: block;
+        margin: auto;
+        width: 100px;
+    }
+    #update{
+        display: block;
+        margin: auto;
+        width: 100px;
+    }
+    #delete{
+        display: block;
+        margin: auto;
+        width: 100px;
+    }
+}
+@media (max-width: 750px) {
+    #prod_name{
+        font-size: 10px;
+    }
+
+}
+@media (max-width: 545px) {
+    #prod_name{
+        font-size: 8px;
+    }
+
+}

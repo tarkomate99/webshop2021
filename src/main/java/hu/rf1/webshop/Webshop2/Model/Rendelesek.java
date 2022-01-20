@@ -33,6 +33,14 @@ public class Rendelesek {
         this.user_id = user_id;
     }
 
+    public Rendelesek(Integer termek_id, Integer osszeg, LocalDateTime date, Integer user_id) {
+        this.termek_id=termek_id;
+        this.osszeg=osszeg;
+        this.date = date;
+        this.user_id=user_id;
+    }
+
+
     public long getId() {
         return id;
     }

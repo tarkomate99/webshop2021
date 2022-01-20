@@ -2,61 +2,129 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Termékek listája</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Főoldal</title>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/7512e4ab1d.js" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/delete_search_by_string.js}"></script>
+    <!--<script type="text/javascript" th:src="@{/js/searchscript.js}"></script>-->
+    <script type="text/javascript" th:src="@{/js/search_by_string.js}"></script>
+    <script type="text/javascript" th:src="@{/js/welcome.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Webshop</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="/">Főoldal <span class="sr-only">(current)</span></a>
-                <a th:if="${session.username != null and session.user_type == 'admin'}" class="nav-item nav-link" href="/users">Felhasználók</a>
-                <a th:if="${session.username != null and session.user_type == 'admin'}"class="nav-item nav-link" href="/orders">Rendelések</a>
-                <a th:if="${session.username != null and session.user_type == 'user'}" class="nav-item nav-link" href="/orders/{id}">Rendeléseim</a>
-                <a th:if="${session.username != null and session.user_type == 'admin'}" class="nav-item nav-link" href="/ratings">Értékelések</a>
-                <a th:if="${session.username == null}" class="nav-item nav-link" href="/login">Bejelentkezés</a>
-                <a th:if="${session.username == null}" class="nav-item nav-link" href="/registration">Regisztráció</a>
-                <a th:if="${session.username != null}" th:href="@{/logout}" class="nav-item nav-link"><span class="glyphicon glyphicon-log-out"></span>Kijelentkezés</a>
+<div id="page-container">
+    <div id="content-wrap">
+    <!-- HEADER -->
+    <div th:replace="fragments/headernav :: header"></div>
+    <!-- /HEADER -->
+
+    <!-- NAV -->
+    <div th:replace="fragments/headernav :: nav"></div>
+    <!-- /NAV -->
+    <div th:if="${session.username != null}">
+        <span class="fas fa-user"></span><span style="color: lightslategrey" id="welcome"></span>
+    </div>
+        <!-- SECTION -->
+        <div class="section">
+            <!-- container -->
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <!-- shop -->
+                    <div class="col-md-4 col-xs-6">
+                        <div class="shop">
+                            <div class="shop-img">
+                                <img src="./img/shop01.png" alt="">
+                            </div>
+                            <div class="shop-body">
+                                <h3>Monitorok</h3>
+                                <a href="/termekek/monitor" class="cta-btn">Vásárlás<i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /shop -->
+
+                    <!-- shop -->
+                    <div class="col-md-4 col-xs-6">
+                        <div class="shop">
+                            <div class="shop-img">
+                                <img src="./img/shop02.png" alt="">
+                            </div>
+                            <div class="shop-body">
+                                <h3>Processzorok</h3>
+                                <a href="/termekek/processzor" class="cta-btn">Vásárlás<i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /shop -->
+
+                    <!-- shop -->
+                    <div class="col-md-4 col-xs-6">
+                        <div class="shop">
+                            <div class="shop-img">
+                                <img src="./img/shop03.png" alt="">
+                            </div>
+                            <div class="shop-body">
+                                <h3>Videókártyák</h3>
+                                <a href="/termekek/videokartya" class="cta-btn">Vásárlás<i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /shop -->
+                </div>
+                <!-- /row -->
             </div>
+            <!-- /container -->
         </div>
-    </nav>
-    <div align="center">
-        <h1>Termékek</h1>
-        <br>
-        <a href="/new">Új termék hozzáadása</a>
-        <table class="table">
-            <thead class="thead-dark">
+        <!-- /SECTION -->
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <table class="table">
+                <thead class="thead-dark">
                 <tr>
-<!--                    <td scope="col">ID</td>-->
-                    <td scope="col">Termék neve</td>
+                    <td scope="col">Termék név</td>
                     <td scope="col">Ár</td>
-                    <td scope="col">Készlet (db)</td>
                     <td scope="col">Értékelés</td>
                     <td scope="col">Kategória</td>
-                    <td th:if="${session.user != null}"scope="col" colspan="3">Módosítás</td>
+                    <td scope="col" colspan="2" style="text-align: center">Módosítás</td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr th:each="prod : ${productlist}" scope="row">
-<!--                    <td th:text="${prod.id}">id</td>-->
-                    <td th:text="${prod.name}">Name</td>
-                    <td th:text="${prod.price}">Subject</td>
-                    <td th:text="${prod.nofitems}">Subject</td>
-                    <td th:text="${prod.rating}">Subject</td>
-                    <td th:text="${prod.category}">Subject</td>
-                    <td th:if="${session.user != null}"><a th:href="@{/orders/new/{id}(id=${prod.id})}">Megrendelés</a></td>
-                    <td th:if="${session.user != null and session.user.user_type == 'admin'}"><a th:href="@{/edit/{id}(id=${prod.id})}">Update</a></td>
-                    <td th:if="${session.user != null and session.user.user_type == 'admin'}">
-                        <a th:href="@{'/delete/'+${prod.id}}">Delete</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="list-cart">
+                </tbody>
+            </table>
+            <label for="kupon">
+                Kupon kód: <input type="text" name="kupon" id="kupon" placeholder="Írj be egy kuponkódot..">
+                <button onclick="activateKupon()">Aktiválás</button>
+            </label>
+            <label for="message">
+                <span class="" id="message"></span>
+            </label>
+        </div>
+
     </div>
+    </div>
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footer"></div>
+    <!-- /FOOTER -->
+    <script type="text/javascript" th:src="@{/js/menutoggle.js}"></script>
+
+</div>
 </body>
 </html>
+
+
 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kapcsolat</title>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/7512e4ab1d.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/delete_search_by_string.js}"></script>
+    <!--<script type="text/javascript" th:src="@{/js/searchscript.js}"></script>-->
+    <script type="text/javascript" th:src="@{/js/search_by_string.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+    <link rel="stylesheet" th:href="@{/css/contact.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <script type="text/javascript" th:src="@{/js/script2.js}"></script>
+</head>
+<body>
+<div id="page-container">
+    <div id="content-wrap">
+<!-- HEADER -->
+<div th:replace="fragments/headernav :: header"></div>
+<!-- /HEADER -->
+
+<!-- NAV -->
+<div th:replace="fragments/headernav :: nav"></div>
+<!-- /NAV -->
+    <div align="center">
+        <h1>Kapcsolat felvétel</h1>
+    </div>
+    <form name="contact" th:action="@{/contact/send}" method="post">
+    <div class="container contact">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="contact-info">
+                    <img src="https://image.ibb.co/kUASdV/contact-image.png" alt="image"/>
+                    <h2>Vedd fel a kapcsolatot velünk!</h2>
+                    <h4>Szeretnénk hallani Önről!</h4>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="contact-form">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="fname">Vezetéknév</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="fname" placeholder="Vezetéknév" name="fname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="lname">Keresztnév</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="lname" placeholder="Keresztnév" name="lname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">E-mail:</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="email" placeholder="E-mail cím" name="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="comment">Üzenet:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">Elküldés</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+<script type="text/javascript" th:src="@{/js/menutoggle.js}"></script>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <td scope="col">Termék név</td>
+                <td scope="col">Ár</td>
+                <td scope="col">Értékelés</td>
+                <td scope="col">Kategória</td>
+                <td scope="col" colspan="2" style="text-align: center">Módosítás</td>
+            </tr>
+            </thead>
+            <tbody id="list-cart">
+            </tbody>
+        </table>
+        <label for="kupon">
+            Kupon kód: <input type="text" name="kupon" id="kupon" placeholder="Írj be egy kuponkódot..">
+            <button onclick="activateKupon()">Aktiválás</button>
+        </label>
+        <label for="message">
+            <span class="" id="message"></span>
+        </label>
+    </div>
+
+</div>
+    </div>
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footer"></div>
+    <!-- /FOOTER -->
+<script type="text/javascript" th:src="@{/js/menutoggle.js}"></script>
+</div>
+</body>
+
+</html>
+
+
+

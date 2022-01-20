@@ -1,0 +1,85 @@
+<header th:fragment="header">
+    <div id="header">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- LOGO -->
+                <div class="col-md-3">
+                    <div class="header-logo">
+                        <a href="#" class="logo">
+                            <img th:src="@{/img/logo.png}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!-- /LOGO -->
+
+                <!-- KERESO -->
+                <div class="col-md-6">
+                    <div class="header-search">
+                        <form>
+                            <select id="kategoria" onclick="searchByCategory()" class="input-select">
+                                <option value="Minden">Minden</option>
+                                <option value="Monitor">Monitor</option>
+                                <option value="Processzor">Processzor</option>
+                                <option value="Videókártya">Videókártya</option>
+                            </select>
+                            <input class="input" id="myInput" onkeypress="return myKeyPress(event)" placeholder="Termékek keresése">
+                            <button class="search-btn"><a href="/termekek" onclick="addSeachString()">Keresés</a></button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /KERESO -->
+
+                <!-- Kosar  -->
+                <div class="col-md-3 clearfix">
+                    <div class="header-ctn">
+                        <a th:if="${session.username != null}" onclick="openModal()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Kosár</span>
+                            <span class="qty" id="counter-label">0</span>
+                        </a>
+
+                        <!-- Menu toggle -->
+                        <div class="menu-toggle">
+                            <a href="#">
+                                <i class="fa fa-bars"></i>
+                                <span>Menü</span>
+                            </a>
+                        </div>
+                        <!-- /Menu toggle -->
+                    </div>
+                </div>
+                <!-- /Kosar -->
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+</header>
+<!-- NAVIGATION -->
+<nav id="navigation" th:fragment="nav">
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li><a href="/">Főoldal <span class="sr-only">(current)</span></a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'admin'}" href="/users">Felhasználók</a></li>
+                <li><a href="/termekek">Termékek</a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'admin'}" href="/orders">Rendelések</a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'user'}" href="/myorders">Rendeléseim</a></li>
+                <li><a th:if="${session.username != null and session.user_type == 'admin'}" href="/ratings">Értékelések</a></li>
+                <li><a th:if="${session.username != null}" href="/contact">Kapcsolat felvétel</a></li>
+                <li><a th:if="${session.username == null}" href="/login">Bejelentkezés</a></li>
+                <li><a th:if="${session.username == null}" href="/registration">Regisztráció</a></li>
+                <li><a th:if="${session.username != null}" th:href="@{/logout}"><span class="fas fa-sign-out-alt"></span>Kijelentkezés</a></li>
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
+</nav>
+<!-- /NAVIGATION -->

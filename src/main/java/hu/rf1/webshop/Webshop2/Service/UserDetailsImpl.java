@@ -1,25 +1,33 @@
 package hu.rf1.webshop.Webshop2.Service;
 
-import hu.rf1.webshop.Webshop2.Model.Users;
+import hu.rf1.webshop.Webshop2.Model.Role;
+import hu.rf1.webshop.Webshop2.Model.User;
+import hu.rf1.webshop.Webshop2.Repository.RoleRepository;
+import hu.rf1.webshop.Webshop2.Repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class UserDetailsImpl  implements UserDetails {
 
-    private Users user;
+    private User user;
 
-    public UserDetailsImpl(Users user){
+
+    public UserDetailsImpl(User user){
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(user.getUser_type()));
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles){
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        }
         return authorities;
     }
 
@@ -50,6 +58,6 @@ public class UserDetailsImpl  implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.getEnabled();
     }
 }

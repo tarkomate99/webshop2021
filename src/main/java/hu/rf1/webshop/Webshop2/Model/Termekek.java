@@ -25,16 +25,40 @@ public class Termekek {
     @Column(name = "category")
     private String category;
 
+    @Column(name = "img")
+    private String img;
+
+    @Column(name = "description")
+    private String description;
+
     public Termekek() {
     }
 
-    public Termekek(long id, String name, Integer price, Integer nofitems, Double rating, String category) {
+    public Termekek(long id, String name, Integer price, Integer nofitems, Double rating, String category, String img, String description) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.nofitems = nofitems;
         this.rating = rating;
         this.category = category;
+        this.img = img;
+        this.description = description;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public long getId() {

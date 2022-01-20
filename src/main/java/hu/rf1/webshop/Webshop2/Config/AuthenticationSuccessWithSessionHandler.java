@@ -24,10 +24,12 @@ public class AuthenticationSuccessWithSessionHandler extends SavedRequestAwareAu
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         super.onAuthenticationSuccess(request, response, authentication);
         request.getSession().setAttribute(USERNAME, request.getParameter(USERNAME));
-        if (request.getParameter(USERNAME).equals("admin")){
-            request.getSession().setAttribute(user_type, request.getParameter(USERNAME));
+        if (request.getParameter(USERNAME).equals("admin@admin.com")){
+            request.getSession().setAttribute(user_type, "admin");
+        }else if (request.getParameter(USERNAME).equals("uploader@uploader.com")){
+            request.getSession().setAttribute(user_type,"uploader");
         }else{
-            request.getSession().setAttribute(user_type,"user");
+            request.getSession().setAttribute(user_type, "user");
         }
 
     }

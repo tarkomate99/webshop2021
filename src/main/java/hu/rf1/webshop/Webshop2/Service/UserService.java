@@ -1,9 +1,14 @@
 package hu.rf1.webshop.Webshop2.Service;
 
-import hu.rf1.webshop.Webshop2.Model.Users;
+
+import hu.rf1.webshop.Webshop2.Model.User;
 
 public interface UserService {
 
-    public Users findByEmail(String email);
+    public String registerUser(User user);
+
+    public User findByEmail(String email);
+
+    public String userActivation(String code);
 
 }
